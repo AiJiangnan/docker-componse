@@ -1,0 +1,53 @@
+version: "3"
+services:
+  drone:
+    container_name: drone
+    image: drone/drone:latest
+    environment:
+      DRONE_GOGS_SERVER: http://gogs.idatafun.com
+      DRONE_RPC_SECRET: idatafun
+      DRONE_SERVER_HOST: devops.idatafun.com
+      DRONE_USER_CREATE: username:AiJiangnan,admin:true
+    ports:
+      - 10081:80
+    volumes:
+      - drone:/data
+    restart: always
+    cpus: 0.5
+    mem_limit: 512M
+    networks:
+      - idatafun-net
+  drone-runner-docker:
+    container_name: drone-runner-docker
+    image: drone/drone-runner-docker:linux-amd64
+    environment:
+      DRONE_RPC_HOST: drone
+      DRONE_RPC_SECRET: idatafun
+      DRONE_RUNNER_NAME: drone-runner-docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    cpus: 0.5
+    mem_limit: 512M
+    networks:
+      - idatafun-net
+  drone-runner-ssh:
+    container_name: drone-runner-ssh
+    image: drone/drone-runner-ssh:linux-amd64
+    environment:
+      DRONE_RPC_HOST: drone
+      DRONE_RPC_SECRET: idatafun
+    restart: always
+    cpus: 0.5
+    mem_limit: 512M
+    networks:
+      - idatafun-net
+
+networks:
+  idatafun-net:
+    external:
+      name: idatafun
+
+volumes:
+  drone:
+    name: drone
