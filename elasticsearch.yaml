@@ -1,0 +1,33 @@
+version: "3"
+services:
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:8.1.1
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - /home/ajn/docker/elasticsearch/config:/usr/share/elasticsearch/config
+    restart: always
+    cpus: 1
+    mem_limit: 768M
+    networks:
+      - codeartist-net
+
+networks:
+  codeartist-net:
+    name: codeartist
+    driver: bridge
+    ipam:
+      config:
+        - gateway: 172.168.0.1
+          subnet: 172.168.0.0/24
+
+# networks:
+#   codeartist-net:
+#     external:
+#       name: codeartist
+
+# volumes:
+#   portainer-ce:
+#     name: portainer-ce

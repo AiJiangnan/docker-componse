@@ -1,0 +1,19 @@
+version: "3"
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:1.19
+    ports:
+      - 80:80
+    volumes:
+      - /home/ajn/docker/nginx:/etc/nginx
+    restart: always
+    cpus: 1
+    mem_limit: 512M
+    networks:
+      - codeartist-net
+
+networks:
+  codeartist-net:
+    external:
+      name: codeartist
