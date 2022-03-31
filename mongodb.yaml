@@ -1,0 +1,22 @@
+version: "3"
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo:4.2.15
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data/db
+      - mongo-config:/data/configdb
+    restart: always
+    cpus: 1
+    mem_limit: 768M
+
+volumes:
+  mongo:
+    name: mongo
+  mongo-config:
+    name: mongo-config
