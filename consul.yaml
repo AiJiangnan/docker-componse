@@ -1,0 +1,20 @@
+version: "3"
+services:
+  nginx:
+    container_name: consul
+    image: consul:1.12.2
+    ports:
+      - 8500:8500
+    volumes:
+      - /home/ajn/docker/nginx:/etc/nginx
+    command: "agent -server -bootstrap -ui -node=server-1 -client='0.0.0.0'"
+    restart: always
+    cpus: 1
+    mem_limit: 512M
+    networks:
+      - idatafun-net
+
+networks:
+  idatafun-net:
+    external:
+      name: idatafun
