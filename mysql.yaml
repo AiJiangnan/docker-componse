@@ -1,0 +1,26 @@
+version: "3"
+services:
+  mysql_server:
+    container_name: mysql-platform
+    image: 	mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=19950121
+      - TZ=Asia/Shanghai
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    cpus: 1
+    mem_limit: 512M
+    networks:
+      - idatafun-net
+
+networks:
+  idatafun-net:
+    external:
+      name: idatafun
+
+volumes:
+  mysql-data:
+    name: mysql-platform
