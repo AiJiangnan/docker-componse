@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  openldap:
+    container_name: openldap
+    image: bitnami/openldap:2.6
+    environment:
+      - LDAP_ROOT=dc=idatafun,dc=com
+      - LDAP_ADMIN_PASSWORD=19950121
+      - LDAP_CONFIG_ADMIN_ENABLED=yes
+    volumes:
+      - "openldap-data:/bitnami/openldap"
+    restart: always
+    cpus: 1
+    mem_limit: 512M
+    networks:
+      - idatafun-net
+
+networks:
+  idatafun-net:
+    external:
+      name: idatafun
+
+volumes:
+  openldap-data:
+    name: openldap
