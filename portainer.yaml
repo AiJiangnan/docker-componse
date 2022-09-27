@@ -2,7 +2,7 @@ version: "3"
 services:
   portainer:
     container_name: portainer-ce
-    image: portainer/portainer-ce:2.9.1
+    image: portainer/portainer-ce:2.15.1
     ports:
       - 9000:9000
     volumes:
@@ -11,17 +11,6 @@ services:
     restart: always
     cpus: 0.5
     mem_limit: 512M
-    networks:
-      - idatafun-net
-
-networks:
-  idatafun-net:
-    name: idatafun
-    driver: bridge
-    ipam:
-      config:
-        - gateway: 172.168.0.1
-          subnet: 172.168.0.0/24
 
 volumes:
   portainer-ce:
