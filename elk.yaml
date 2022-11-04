@@ -1,0 +1,47 @@
+version: "3"
+services:
+  elasticsearch:
+    container_name: elk-elasticsearch-test
+    image: elasticsearch:8.5.0
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - ~/docker/elasticsearch/config:/usr/share/elasticsearch/config
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    cpus: 2
+    mem_limit: 768M
+    networks:
+      - idatafun-net
+  filebeat:
+    container_name: elk-filebeat-test
+    image: elastic/filebeat:8.5.0
+    volumes:
+      - ~/docker/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - filebeat-data:/usr/share/filebeat/data
+    cpus: 1
+    mem_limit: 512M
+    networks:
+      - idatafun-net
+  kibana:
+    container_name: elk-kibana-test
+    image: kibana:8.5.0
+    volumes:
+      - ~/docker/kibana/config:/usr/share/kibana/config
+      - kibana-data:/usr/share/kibana/data
+    cpus: 2
+    mem_limit: 768M
+    networks:
+      - idatafun-net
+
+networks:
+  idatafun-net:
+    external:
+      name: idatafun
+
+volumes:
+  elasticsearch-data:
+    name: elk-elasticsearch
+  kibana-data:
+    name: elk-kibana
+  filebeat-data:
+    name: elk-filebeat
