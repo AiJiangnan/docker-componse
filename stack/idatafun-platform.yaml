@@ -1,0 +1,88 @@
+version: "3"
+services:
+  # ELK ES搜索引擎
+  elk-elasticsearch:
+    image: elasticsearch:6.5.0
+    ports:
+      - 9201:9200
+    volumes:
+      - /home/ajn/docker/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/elasticsearch.yml
+      - elk-elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - idatafun-swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==yfl
+      resources:
+        limits:
+          cpus: "2"
+          memory: 768M
+        reservations:
+          cpus: "0.5"
+          memory: 100M
+      restart_policy:
+        condition: none
+  # ELK Kibana搜索引擎可视化
+  elk-kibana:
+    image: kibana:6.5.0
+    ports:
+      - 5602:5601
+    volumes:
+      - /home/ajn/docker/kibana/config:/usr/share/kibana/config
+      - elk-kibana-data:/usr/share/kibana/data
+    networks:
+      - idatafun-swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==yfl
+      resources:
+        limits:
+          cpus: "2"
+          memory: 768M
+        reservations:
+          cpus: "0.5"
+          memory: 100M
+      restart_policy:
+        condition: none
+  # ELK FileBeat日志收集
+  elk-filebeat:
+    image: elastic/filebeat:6.5.0
+    volumes:
+      - /home/idatafun/docker/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - /tmp/idatafun:/tmp/idatafun
+    networks:
+      - idatafun-swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==idatafun
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+        reservations:
+          cpus: "0.5"
+          memory: 100M
+      restart_policy:
+        condition: none
+
+networks:
+  idatafun-swarm:
+    external:
+      name: idatafun-swarm
+
+volumes:
+  elk-elasticsearch-data:
+    external:
+      name: elk-elasticsearch-data
+  elk-kibana-data:
+    external:
+      name: elk-kibana-data

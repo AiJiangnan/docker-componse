@@ -1,5 +1,32 @@
 version: "3"
 services:
+  # nginx网关
+  nginx:
+    image: nginx:1.19
+    ports:
+      - 81:80
+    volumes:
+      - /home/idatafun/docker/nginx:/etc/nginx
+      - /home/idatafun/docker/web:/web
+      - /tmp/idatafun:/tmp/idatafun
+      - /data:/data
+    networks:
+      - idatafun-swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==idatafun
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 20M
+      restart_policy:
+        condition: none
   # Consul配置中心
   consul:
     image: consul:1.12.2
@@ -23,6 +50,8 @@ services:
         reservations:
           cpus: "0.25"
           memory: 20M
+      restart_policy:
+        condition: none
   # MySQL平台使用数据库
   mysql-platform:
     image: mysql:5.7
@@ -50,6 +79,8 @@ services:
         reservations:
           cpus: "0.25"
           memory: 100M
+      restart_policy:
+        condition: none
   # MySQL业务使用数据库
   mysql-business:
     image: mysql:5.7
@@ -69,7 +100,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname==yfl
+          - node.hostname==idatafun
       resources:
         limits:
           cpus: "1"
@@ -77,6 +108,8 @@ services:
         reservations:
           cpus: "0.25"
           memory: 100M
+      restart_policy:
+        condition: none
   # Redis业务使用数据库
   redis:
     image: redis:5.0.7
@@ -91,7 +124,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname==yfl
+          - node.hostname==idatafun
       resources:
         limits:
           cpus: "1"
@@ -99,6 +132,8 @@ services:
         reservations:
           cpus: "0.25"
           memory: 100M
+      restart_policy:
+        condition: none
 
 networks:
   idatafun-swarm:

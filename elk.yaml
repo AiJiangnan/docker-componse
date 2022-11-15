@@ -29,7 +29,7 @@ services:
     cpus: 1
     mem_limit: 512M
     networks:
-      - idatafun-net  
+      - idatafun-net
 
 networks:
   idatafun-net:
