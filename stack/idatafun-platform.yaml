@@ -7,6 +7,7 @@ services:
       - 9201:9200
     volumes:
       - /home/ajn/docker/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/elasticsearch.yml
+      - /home/ajn/docker/elasticsearch/jvm.options:/usr/share/elasticsearch/jvm.options
       - elk-elasticsearch-data:/usr/share/elasticsearch/data
     networks:
       - idatafun-swarm
