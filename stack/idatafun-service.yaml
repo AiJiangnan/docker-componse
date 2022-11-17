@@ -1,4 +1,4 @@
-version: "3"
+version: "3.4"
 services:
   # 网关服务
   idatafun-gateway:
@@ -22,6 +22,10 @@ services:
         limits:
           cpus: "2"
           memory: 768M
+      update_config:
+        parallelism: 1
+        delay: 5s
+        order: start-first
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -48,6 +52,10 @@ services:
         limits:
           cpus: "2"
           memory: 768M
+      update_config:
+        parallelism: 1
+        delay: 5s
+        order: start-first
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -73,6 +81,10 @@ services:
         limits:
           cpus: "2"
           memory: 768M
+      update_config:
+        parallelism: 1
+        delay: 5s
+        order: start-first
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -98,6 +110,10 @@ services:
         limits:
           cpus: "2"
           memory: 768M
+      update_config:
+        parallelism: 1
+        delay: 5s
+        order: start-first
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -123,6 +139,10 @@ services:
         limits:
           cpus: "2"
           memory: 768M
+      update_config:
+        parallelism: 1
+        delay: 5s
+        order: start-first
       restart_policy:
         condition: on-failure
         delay: 5s
