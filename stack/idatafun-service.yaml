@@ -1,0 +1,135 @@
+version: "3"
+services:
+  # 网关服务
+  idatafun-gateway:
+    image: idatafun-gateway:test-3
+    environment:
+      - spring.profiles.active=test
+      - spring.cloud.consul.host=10.8.0.10
+    ports:
+      - 8080:8080
+    volumes:
+      - /tmp/idatafun:/tmp/idatafun
+    networks:
+      - idatafun-swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==idatafun
+      resources:
+        limits:
+          cpus: "2"
+          memory: 768M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  # 公共管理服务
+  idatafun-common:
+    image: idatafun-common:1.0.0
+    environment:
+      - spring.profiles.active=test
+      - spring.cloud.consul.host=10.8.0.10
+    volumes:
+      - /data:/data
+      - /tmp/idatafun:/tmp/idatafun
+    networks:
+      - idatafun-swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==idatafun
+      resources:
+        limits:
+          cpus: "2"
+          memory: 768M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  # 权限服务
+  idatafun-pms:
+    image: idatafun-pms:1.0.0
+    environment:
+      - spring.profiles.active=test
+      - spring.cloud.consul.host=10.8.0.10
+    volumes:
+      - /tmp/idatafun:/tmp/idatafun
+    networks:
+      - idatafun-swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==idatafun
+      resources:
+        limits:
+          cpus: "2"
+          memory: 768M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  # 会员服务
+  idatafun-account:
+    image: idatafun-account:1.0.0
+    environment:
+      - spring.profiles.active=test
+      - spring.cloud.consul.host=10.8.0.10
+    volumes:
+      - /tmp/idatafun:/tmp/idatafun
+    networks:
+      - idatafun-swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==idatafun
+      resources:
+        limits:
+          cpus: "2"
+          memory: 768M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+  # IM服务
+  idatafun-circlery:
+    image: idatafun-circlery:1.0.0
+    environment:
+      - spring.profiles.active=test
+      - spring.cloud.consul.host=10.8.0.10
+    volumes:
+      - /tmp/idatafun:/tmp/idatafun
+    networks:
+      - idatafun-swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==idatafun
+      resources:
+        limits:
+          cpus: "2"
+          memory: 768M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+networks:
+  idatafun-swarm:
+    external:
+      name: idatafun-swarm

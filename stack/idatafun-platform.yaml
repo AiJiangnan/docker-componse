@@ -19,13 +19,16 @@ services:
           - node.hostname==yfl
       resources:
         limits:
-          cpus: "2"
+          cpus: "4"
           memory: 768M
         reservations:
-          cpus: "0.5"
-          memory: 100M
+          cpus: "2"
+          memory: 512M
       restart_policy:
-        condition: none
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
   # ELK Kibana搜索引擎可视化
   elk-kibana:
     image: kibana:6.5.0
@@ -44,13 +47,16 @@ services:
           - node.hostname==yfl
       resources:
         limits:
-          cpus: "2"
+          cpus: "4"
           memory: 768M
         reservations:
-          cpus: "0.5"
-          memory: 100M
+          cpus: "2"
+          memory: 512M
       restart_policy:
-        condition: none
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
   # ELK FileBeat日志收集
   elk-filebeat:
     image: elastic/filebeat:6.5.0

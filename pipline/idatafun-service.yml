@@ -1,0 +1,56 @@
+kind: pipeline
+type: docker
+name: {{ .input.name }} test
+
+clone:
+  disable: true
+
+steps:
+  - name: git clone
+    image: drone/git
+    pull: never
+    commands:
+      - git clone -b test --depth=1  {{ .input.repo }} .
+    environment:
+      GIT_USERNAME:
+        from_secret: git_username
+      GIT_PASSWORD:
+        from_secret: git_password
+  - name: maven package
+    image: maven:3.8.4-jdk-8
+    pull: never
+    volumes:
+      - name: m2
+        path: /root/.m2
+    commands:
+      - mvn clean package -U -DskipTests=true -s /root/.m2/settings.xml
+  - name: docker build
+    image: docker:dind
+    pull: never
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    commands:
+      - docker build -f ./Dockerfile -t {{ .input.name }}:$DRONE_BRANCH-$DRONE_BUILD_NUMBER {{ .input.name }}-web/target
+  - name: docker update
+    image: docker:dind
+    pull: never
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    commands:
+      - docker service update --image {{ .input.name }}:$DRONE_BRANCH-$DRONE_BUILD_NUMBER idatafun-service_{{ .input.name }}
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+  - name: m2
+    host:
+      path: /home/idatafun/.m2
+
+trigger:
+  event:
+    - push
+  branch:
+    - test
