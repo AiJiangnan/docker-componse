@@ -148,6 +148,32 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
+  # WebHooks服务
+  idatafun-webhooks:
+    image: idatafun-webhooks:1.0.0
+    ports:
+      - 9080:8080
+    networks:
+      - idatafun-swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname==idatafun
+      resources:
+        limits:
+          cpus: "2"
+          memory: 215M
+      update_config:
+        parallelism: 1
+        delay: 5s
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
 
 networks:
   idatafun-swarm:

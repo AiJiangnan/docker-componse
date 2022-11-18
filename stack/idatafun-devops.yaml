@@ -50,6 +50,8 @@ services:
       DRONE_SERVER_HOST: drone.idatafun.com
       DRONE_SERVER_PROTO: http
       DRONE_USER_CREATE: username:AiJiangnan,admin:true
+      DRONE_WEBHOOK_ENDPOINT: http://10.8.0.10:9080/api/webhook/drone
+      DRONE_WEBHOOK_SECRET: bea26a2221fd8090ea38720fc445eca6
     ports:
       - 3001:80
     volumes:
